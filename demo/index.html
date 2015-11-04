@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <title>my-colorlist Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../my-colorlist.html">
+    <link rel="import" href="../my-colorrepeat.html">
+    <link rel="import" href="../my-color.html">
+</head>
+<body>
+<script>
+  var redItems= [
+    {ident: 1, color: "red", label: "Red 1"},
+    {ident: 2, color: "red", label: "Red 2"}
+  ];
+  var blueItems= [
+    {ident: 1, color: "blue", label: "Blue 1"},
+    {ident: 2, color: "blue", label: "Blue 2"},
+    {ident: 3, color: "blue", label: "Blue 3"},
+    {ident: 4, color: "blue", label: "Blue 4"}
+  ];
+
+</script>
+<div>
+<h2>List iterators and styling</h2>
+<p>I'm having trouble styling a list of components. The key thing that is the issue is that I am using </p>
+<ul>
+  <li>The list initially starts with 2 red items.</li>
+  <li>'Click to Switch Color' empties the list and adds 4 'blue' items.</li>
+  <li>Clicking again goes back to red and so on.</li>
+</ul>
+<p>However, in both lists, even though the element attributes and labels appear correct, the styling is not being reflected properly.
+  Clearly, something is wrong. Can anyone fix the CSS style to show correctly?</p>
+<h3>Example my-colorlist</h3>
+<p>The template in this component uses an iron-list</p>
+<my-colorlist></my-colorlist>
+<br>
+-------<br>
+<h3>Example my-colorrepeat</h3>
+<p>The template in this component uses a dom-repeat</p>
+<my-colorrepeat></my-colorrepeat>
+</div>
+</body>
+</html>

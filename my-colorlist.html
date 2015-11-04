@@ -1,0 +1,107 @@
+<!-- Imports polymer -->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-list/iron-list.html">
+
+<!-- Defines element markup -->
+<dom-module id="my-colorlist">
+    <style>
+        :host my-color {
+            height: 24px;
+            width: 24px;
+            --my-background-color: gray;
+        }
+
+        :host my-color[color='red'] {
+            --my-background-color: red;
+        }
+
+        :host my-color[color='blue'] {
+            --my-background-color: blue;
+        }
+
+        .my-list-button {
+            display: inline-block;
+            width: 200px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            background-color: #999;
+            cursor: pointer;
+            padding: 2px 10px;
+        }
+
+        .my-list-button:hover {
+            background-color: #bbb;
+        }
+
+        #my-color-description {
+            font-weight: bold;
+        }
+    </style>
+    <template is="dom-bind">
+
+        <div class="my-list-button" on-click="_switchColor">CLICK TO SWITCH COLOR</div>
+        <div id="my-color-description">All Circles Should Be RED</div>
+
+        <iron-list id="my-iron-list" items="[[listItems]]" as="item">
+            <template>
+                <div>
+                    <my-color color$="{{item.color}}" class="my-colortype"></my-color>
+                    <span>{{item.label}}</span>
+                </div>
+            </template>
+        </iron-list>
+
+    </template>
+
+    <!-- Registers custom element -->
+    <script>
+        (function () {
+            Polymer({
+                is: 'my-colorlist',
+
+                properties: {
+                    color: {
+                        type: String,
+                        reflectToAttribute: true
+                    }
+                },
+
+                ready: function () {
+                    this.listItems = [];
+                    this.itemSource = redItems;
+                    this._getItems();
+                },
+
+                _getItems: function () {
+////////            REMOVE OLD ITEMS FROM THE LIST
+                    while (this.listItems.length) this.pop("listItems");
+//                  this.splice("listItems",0,this.listItems.length); // I've tried both deleting all items by pop and splice.
+
+////////            AT THIS POINT, I WOULD BE FINE WITH TELLING THE LIST TO REINITIALIZE THE CSS
+////////            IT WOULD BE EVEN BETTER IF THERE WAS AN "empty()" FUNCTION TO CALL THAT WOULD EMPTY THE LIST AND DESTROY THE CSS
+////////            HOWEVER, THE CSS SHOULD BE DELETED AS EACH ITEM IS DESTROYED.
+
+////////            NOW ADD NEW ITEMS TO THE LIST
+                    for (var i = 0; i < this.itemSource.length; i++) {
+                        var item = this.itemSource[i];
+                        this.push("listItems", item);
+                    }
+                },
+
+//              Simply a function to toggle between the red and blue item lists.
+                _switchColor: function () {
+                    if (this.itemSource == blueItems) {
+                        this.$["my-color-description"].innerHTML = "All Circles Should Be RED";
+                        this.itemSource = redItems;
+                    } else {
+                        this.$["my-color-description"].innerHTML = "All Circles Should Be BLUE";
+                        this.itemSource = blueItems;
+                    }
+                    this._getItems();
+                }
+            });
+        })();
+    </script>
+</dom-module>
+

@@ -1,0 +1,42 @@
+
+<!-- Imports polymer -->
+<link rel="import" href="../polymer/polymer.html">
+
+
+<dom-module id="my-color">
+    <template>
+        <style>
+            :host {
+                display: inline-block;
+                vertical-align: middle;
+                margin: 1px;
+            }
+            :host div {
+                background-color: var(--my-background-color,"yellow");
+            }
+            :host div {
+                border-radius: 100%;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <div color$="{{color}}"><content></content></div>
+    </template>
+    <script>
+        Polymer({
+            is: "my-color",
+            properties: {
+                color: {
+                    type: String,
+                    value: "green",
+                    observer: "_addColorClass"
+                }
+            },
+            _addColorClass: function(newval, oldval) {
+                if (!!oldval) this.classList.remove("my-colortype-"+oldval);
+                if (!!newval) this.classList.add("my-colortype-"+newval);
+            }
+        });
+    </script>
+</dom-module>
+
