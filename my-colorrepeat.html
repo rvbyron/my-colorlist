@@ -15,12 +15,12 @@
             width: 24px;
             --my-background-color: gray;
         }
-        :host my-color[color='red'] {
-            --my-background-color: red;
-        }
         :host my-color[color='blue'] {
             --my-background-color: blue;
         }
+        :host my-color[color='red'] {
+            --my-background-color: red;
+        }        
         :host .my-list-button {
             display: inline-block;
             width: 200px;
@@ -37,6 +37,12 @@
         #my-color-description {
             font-weight: bold;
         }
+        .my-colortype-red  {
+            background-color: red;
+        }
+        .my-colortype-blue  {
+            background-color: blue;
+        }        
     </style>
 
     <!-- Defines element markup -->
@@ -46,7 +52,8 @@
         <div class="my-list-button" on-click="_switchColor">CLICK TO SWITCH COLOR</div>
         <div id="my-color-description">All Circles Should Be RED</div>
 
-        <template id="my-dom-repeat" is="dom-repeat" items="[[listItems]]" as="item">
+        <template id="my-dom-re
+                      peat" is="dom-repeat" items="[[listItems]]" as="item">
             <div>
                 <my-color color$="{{item.color}}" class="my-colortype"></my-color>
                 <span>{{item.label}}</span>
@@ -76,7 +83,8 @@
 
                 _getItems: function () {
 ////////            REMOVE OLD ITEMS FROM THE LIST
-                    while (this.listItems.length) this.pop("listItems");
+                    //while (this.listItems.length) this.pop("listItems");
+                    this.listItems = [];
 //                  this.splice("listItems",0,this.listItems.length); // I've tried both deleting all items by pop and splice.
 
 ////////            AT THIS POINT, I WOULD BE FINE WITH TELLING THE LIST TO REINITIALIZE THE CSS
@@ -87,20 +95,32 @@
                     for (var i = 0; i < this.itemSource.length; i++) {
                         var item = this.itemSource[i];
                         this.push("listItems", item);
+                        
                     }
                 },
 
 //              Simply a function to toggle between the red and blue item lists.
                 _switchColor: function() {
                     console.log("switch colors");
-                    if (this.itemSource==blueItems) {
+                    if (this.itemSource===blueItems) {
+                        alert('blue');
                         this.$["my-color-description"].innerHTML="All Circles Should Be RED";
+                        this.itemSource=null;
+                        this.listItems = [];
                         this.itemSource = redItems;
-                    } else {
+                        this._getItems(); 
+                        return;
+                    } 
+                    if (this.itemSource===redItems) {
+                        alert('red');                        
                         this.$["my-color-description"].innerHTML="All Circles Should Be BLUE";
+                        this.itemSource=null;
+                        this.listItems = [];
                         this.itemSource = blueItems;
+                        this._getItems();
+                        return;
                     }
-                    this._getItems();
+                    //this._getItems();
                 }
 
             });
