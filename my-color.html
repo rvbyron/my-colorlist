@@ -23,6 +23,11 @@
         <div color$="{{color}}"><content></content></div>
     </template>
     <script>
+        function _bind(func, context) {
+            return function() {
+                return func.apply(context, arguments);
+            }
+        }
         Polymer({
             is: "my-color",
             properties: {
@@ -32,6 +37,24 @@
                     observer: "_addColorClass"
                 }
             },
+
+            ready: function() {
+                this._createObserver();
+            },
+
+            _createObserver: function () {
+                // create an observer instance
+                var observer = new MutationObserver(_bind(function (mutations) {
+                    this.updateStyles();
+                }, this));
+
+                // configuration of the observer:
+                var config = {attributes: true, childList: true, characterData: true, subtree: true};
+
+                // pass in the target node, as well as the observer options
+                observer.observe(this, config);
+            },
+
             _addColorClass: function(newval, oldval) {
                 if (!!oldval) this.classList.remove("my-colortype-"+oldval);
                 if (!!newval) this.classList.add("my-colortype-"+newval);
